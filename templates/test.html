@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Level {{ level }} Test</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h2>Level {{ level }} Test</h2>
+<div id="timer">05:00</div>
+
+<div id="questionBox"></div>
+<div id="optionsBox"></div>
+
+<button id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
+<button id="nextBtn" onclick="nextQuestion()">Next</button>
+
+<script>
+  const LEVEL = {{ level }};
+</script>
+<!-- OPTIONAL: FULLSCREEN (YOU MAY SKIP THIS) -->
+<script>
+  window.onload = () => {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    }
+  };
+</script>
+<!-- OPTIONAL: FULLSCREEN (logic end) -->
+
+<script src="{{ url_for('static', filename='test.js') }}"></script>
+
+</body>
+</html>

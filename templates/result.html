@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h2>Result</h2>
+<p>Correct: <span id="correct"></span></p>
+<p>Wrong: <span id="wrong"></span></p>
+
+<ul id="details"></ul>
+
+<script>
+  const result = JSON.parse(localStorage.getItem("result"));
+
+  document.getElementById("correct").innerText = result.correct;
+  document.getElementById("wrong").innerText = result.wrong;
+
+  const ul = document.getElementById("details");
+
+  result.details.forEach(q => {
+    const li = document.createElement("li");
+    li.style.color = q.correct ? "green" : "red";
+    li.innerText = `${q.question} | Your: ${q.user} | Correct: ${q.answer}`;
+    ul.appendChild(li);
+  });
+</script>
+
+</body>
+</html>
