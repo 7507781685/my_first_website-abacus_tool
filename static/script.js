@@ -64,6 +64,39 @@ function openLogin() {
   window.location.href = "/login-page";
 }
 
+function forgotpassword() {
+  window.location.href = "/forgot-password-page";
+}
 
+function sendOTP() {
+  const contact = document.getElementById("contact").value;
+
+  fetch("/forgot-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ contact })
+  })
+  .then(res => res.json())
+  .then(data => alert(data.message || data.error));
+}
+
+function resetPassword() {
+  const contact = document.getElementById("contact").value;
+  const otp = document.getElementById("otp").value;
+  const newPassword = document.getElementById("newPassword").value;
+
+  fetch("/reset-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ contact, otp, newPassword })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || data.error);
+    if (data.message) {
+      window.location.href = "/login-page";
+    }
+  });
+}
 
 

@@ -5,6 +5,8 @@ import sqlite3
 from flask import render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
+import random
+otp_store = {}  # temporary storage
 
 app = Flask(__name__)
 CORS(app)
@@ -101,6 +103,62 @@ def start_test():
 def result_page():
     return render_template("result.html")
 
+@app.route("/forgot-password-page")
+def forgot_password_page():
+    return render_template("forgot_password.html")
+
+#Verify OTP + Reset Password
+@app.route("/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.json
+    contact = data.get("contact")
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id FROM users WHERE email=? OR phone=?",
+        (contact, contact)
+    )
+    user = cursor.fetchone()
+    conn.close()
+
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    otp = str(random.randint(100000, 999999))
+    otp_store[contact] = otp
+
+    print("OTP (for testing):", otp)  # simulate SMS/Email
+
+    return jsonify({"message": "OTP sent"})
+@app.route("/reset-password", methods=["POST"])
+def reset_password():
+    data = request.json
+    contact = data.get("contact")
+    otp = data.get("otp")
+    new_password = data.get("newPassword")
+
+    # Debug (optional)
+    print("Stored OTP:", otp_store.get(contact))
+    print("Entered OTP:", otp)
+
+    if otp_store.get(contact) != otp:
+        return jsonify({"error": "Invalid OTP"}), 401
+
+    hashed = generate_password_hash(new_password)
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE users SET password=? WHERE email=? OR phone=?",
+        (hashed, contact, contact)
+    )
+    conn.commit()
+    conn.close()
+
+    otp_store.pop(contact, None)
+
+    return jsonify({"message": "Password reset successful"})
 
 if __name__ == "__main__":
     app.run(debug=True)
