@@ -2,33 +2,56 @@
 <html>
 <head>
   <title>Level {{ level }} Test</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<h2>Level {{ level }} Test</h2>
-<div id="timer">05:00</div>
+<body class="test-body">
 
-<div id="questionBox"></div>
-<div id="optionsBox"></div>
+<div class="test-container">
 
-<button id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
-<button id="nextBtn" onclick="nextQuestion()">Next</button>
+<h2 class="test-title">Level {{ level }} Test</h2>
+
+<div class="test-top">
+
+<div class="timer-box">
+⏱ Time Left: <span id="timer">05:00</span>
+</div>
+
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
+</div>
+
+<div class="question-card">
+
+<div id="questionBox" class="question-text"></div>
+
+<div id="optionsBox" class="options"></div>
+
+</div>
+
+<div class="nav-buttons">
+
+<button id="prevBtn" class="btn-prev" onclick="prevQuestion()" disabled>
+Previous
+</button>
+
+<button id="nextBtn" class="btn-next" onclick="nextQuestion()">
+Next
+</button>
+
+</div>
+
+</div>
 
 <script>
-  const LEVEL = {{ level }};
+const LEVEL = {{ level }};
 </script>
-<!-- OPTIONAL: FULLSCREEN (YOU MAY SKIP THIS) -->
-<script>
-  window.onload = () => {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    }
-  };
-</script>
-<!-- OPTIONAL: FULLSCREEN (logic end) -->
 
-<script src="{{ url_for('static', filename='test.js') }}"></script>
+<script src="{{ url_for('static', filename='js/test.js') }}"></script>
 
 </body>
 </html>

@@ -99,4 +99,16 @@ function resetPassword() {
   });
 }
 
+const card = document.getElementById("loginCard");
+
+document.addEventListener("mousemove", (e) => {
+
+if(!card) return;
+
+const x = (window.innerWidth / 2 - e.pageX) / 25;
+const y = (window.innerHeight / 2 - e.pageY) / 25;
+
+card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+
+});
 

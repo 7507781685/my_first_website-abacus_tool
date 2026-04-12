@@ -101,6 +101,10 @@ function showQuestion() {
   // Button text handling
   document.getElementById("nextBtn").innerText =
     currentQuestion === 49 ? "Submit Test" : "Next";
+  //Progress Bar  
+  document.getElementById("progressBar").style.width =
+    ((currentQuestion+1)/50)*100 + "%";
+  
 
 }
 
