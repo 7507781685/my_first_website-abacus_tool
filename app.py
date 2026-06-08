@@ -159,6 +159,25 @@ def reset_password():
     otp_store.pop(contact, None)
 
     return jsonify({"message": "Password reset successful"})
+#for admin to check password for student
+# ADD THIS HERE
+@app.route("/admin/users")
+def admin_users():
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, reg_no, email, phone, password
+        FROM users
+    """)
+
+    users = cursor.fetchall()
+
+    conn.close()
+
+    return jsonify(users)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
